@@ -412,9 +412,8 @@
     </h1>
 
     <p>
-      HealWithMe is a gentle, anonymous space to share what you're feeling —
-      whether it's grief, loneliness, a bad day, or something you can't name.
-      No judgment. No advice you didn't ask for. Just people who understand.
+      Share what you're feeling — grief, loneliness, a bad day, or something you can't name.
+      Get warmth from people who actually get it. No judgment. No advice you didn't ask for.
     </p>
 
     <div class="hero-actions">
@@ -589,7 +588,8 @@
       <input type="email" id="emailInput" placeholder="your@email.com" required autocomplete="email" />
       <button type="submit">Join the waitlist →</button>
     </form>
-    <p class="cta-note reveal">Free forever. No spam. Unsubscribe whenever you want.</p>
+    <p class="cta-note reveal">🌱 Free forever · No spam · Unsubscribe whenever you want</p>
+    <p class="cta-note reveal" id="waitlistCount" style="display:none; margin-top:8px;"></p>
   </div>
 </section>
 
@@ -639,6 +639,13 @@
     input.value = '';
     input.disabled = true;
     btn.disabled = true;
+
+    // Social proof: show count
+    const countEl = document.getElementById('waitlistCount');
+    countEl.style.display = 'block';
+    countEl.textContent = existing.length === 1
+      ? 'You\'re #1 on the list'
+      : `${existing.length} people are waiting with you`;
 
     // Log count
     console.log(`🌱 Waitlist now has ${existing.length} signups`);
