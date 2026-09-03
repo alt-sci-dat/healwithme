@@ -158,7 +158,7 @@
       font-size: 1.8rem; margin-bottom: 36px;
     }
     .quote-grid {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      display: grid; grid-template-columns: 1fr;
       gap: 18px; max-width: 780px; margin: 0 auto;
     }
     .quote-card {
@@ -380,10 +380,31 @@
     .reveal.visible { opacity: 1; transform: translateY(0); }
 
     /* ---- Mobile ---- */
-    @media (max-width: 600px) {
-      .hero { padding: 56px 20px 40px; }
-      .cta-form { flex-direction: column; align-items: stretch; }
+    @media (max-width: 768px) {
+      .nav-inner { padding: 12px 20px; }
+      .logo { font-size: 1.2rem; }
+      .nav-cta { padding: 8px 16px; font-size: 0.8rem; }
+      .hero { padding: 56px 20px 44px; }
+      .hero-badge { font-size: 0.75rem; padding: 5px 14px; margin-bottom: 22px; }
+      .hero p { font-size: 1.05rem; }
+      .btn-primary, .btn-secondary { padding: 13px 24px; font-size: 0.95rem; }
+      .quote-grid { grid-template-columns: 1fr; }
+      .step { padding: 16px 18px; gap: 14px; }
+      .step-num { width: 32px; height: 32px; font-size: 0.8rem; }
+      .spaces-grid { gap: 8px; }
+      .space-tag { padding: 8px 16px; font-size: 0.82rem; }
+      .safety-grid { grid-template-columns: 1fr; gap: 14px; }
+      .safety-card { padding: 22px 16px; }
+      .manifesto blockquote { font-size: clamp(1.2rem, 5vw, 1.6rem); }
+      .cta-band { padding: 60px 20px; }
       .cta-form input, .cta-form button { width: 100%; }
+      .container { padding: 0 20px; }
+    }
+
+    @media (max-width: 380px) {
+      .hero h1 { font-size: 2rem; }
+      .hero p { font-size: 0.95rem; }
+      .nav-cta { padding: 7px 12px; font-size: 0.75rem; }
     }
   </style>
 </head>
