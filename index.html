@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HealWithMe — Share. Be heard. Feel less alone.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500;600&family=Caveat:wght@500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --cream: #faf6f1;
+      --cream-deep: #f3ece3;
+      --warm-white: #fffcf8;
+      --sand: #e8ddd0;
+      --terracotta: #c47d5a;
+      --terracotta-hover: #a86748;
+      --sage: #7a8f7a;
+      --sage-light: #d4ddd4;
+      --clay: #8b6f5e;
+      --ink: #2c2420;
+      --ink-soft: #5a4e47;
+      --ink-muted: #8a7d75;
+      --coral: #d4917a;
+      --coral-soft: #f0d5ca;
+      --lavender: #a89bb8;
+      --lavender-soft: #e6e1ee;
+      --stone: #b8aea6;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      color: var(--ink);
+      background: var(--cream);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* ---- Noise texture overlay ---- */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.025;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 200px;
+      z-index: 9999;
+    }
+
+    /* ---- Utility ---- */
+    .container { max-width: 780px; margin: 0 auto; padding: 0 28px; }
+    .serif { font-family: 'DM Serif Display', Georgia, serif; }
+    .hand { font-family: 'Caveat', cursive; }
+
+    /* ---- Nav ---- */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(250, 246, 241, 0.82);
+      backdrop-filter: blur(18px) saturate(1.4);
+      -webkit-backdrop-filter: blur(18px) saturate(1.4);
+      border-bottom: 1px solid rgba(200, 180, 160, 0.2);
+    }
+    .nav-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 28px; max-width: 780px; margin: 0 auto;
+    }
+    .logo {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.4rem; color: var(--terracotta);
+      letter-spacing: -0.3px;
+    }
+    .logo span { color: var(--sage); }
+    .nav-cta {
+      background: var(--terracotta); color: #fff;
+      border: none; padding: 9px 20px; border-radius: 50px;
+      font-family: 'Inter', sans-serif; font-size: 0.85rem; font-weight: 600;
+      cursor: pointer; transition: all 0.25s;
+      text-decoration: none;
+    }
+    .nav-cta:hover { background: var(--terracotta-hover); transform: translateY(-1px); }
+
+    /* ---- Hero ---- */
+    .hero {
+      padding: 80px 28px 60px; text-align: center;
+      position: relative;
+    }
+    .hero-badge {
+      display: inline-block;
+      background: var(--coral-soft);
+      color: var(--clay);
+      font-size: 0.8rem; font-weight: 600;
+      padding: 6px 16px; border-radius: 50px;
+      margin-bottom: 28px;
+      animation: fadeDown 0.8s ease both;
+    }
+    .hero h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2.4rem, 6vw, 3.6rem);
+      line-height: 1.15;
+      color: var(--ink);
+      letter-spacing: -0.8px;
+      margin-bottom: 22px;
+      animation: fadeDown 0.8s 0.1s ease both;
+    }
+    .hero h1 em {
+      font-style: italic;
+      color: var(--terracotta);
+    }
+    .hero p {
+      font-size: 1.15rem;
+      color: var(--ink-soft);
+      max-width: 520px;
+      margin: 0 auto 36px;
+      line-height: 1.7;
+      animation: fadeDown 0.8s 0.2s ease both;
+    }
+    .hero-actions {
+      display: flex; gap: 14px; flex-wrap: wrap; justify-content: center;
+      animation: fadeDown 0.8s 0.3s ease both;
+    }
+    .btn-primary {
+      background: var(--terracotta); color: #fff;
+      border: none; padding: 14px 32px; border-radius: 50px;
+      font-size: 1rem; font-weight: 600; cursor: pointer;
+      transition: all 0.25s; text-decoration: none;
+      font-family: 'Inter', sans-serif;
+    }
+    .btn-primary:hover { background: var(--terracotta-hover); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(196,125,90,0.3); }
+    .btn-secondary {
+      background: transparent; color: var(--ink);
+      border: 1.5px solid var(--sand); padding: 14px 28px; border-radius: 50px;
+      font-size: 1rem; font-weight: 500; cursor: pointer;
+      transition: all 0.25s; text-decoration: none;
+      font-family: 'Inter', sans-serif;
+    }
+    .btn-secondary:hover { border-color: var(--stone); background: var(--warm-white); }
+
+    /* Floating warm blobs */
+    .blob {
+      position: absolute; border-radius: 50%; filter: blur(60px);
+      pointer-events: none; z-index: -1; opacity: 0.35;
+    }
+    .blob-1 { width: 280px; height: 280px; background: var(--coral-soft); top: -60px; left: -80px; }
+    .blob-2 { width: 220px; height: 220px; background: var(--lavender-soft); top: 40px; right: -60px; }
+    .blob-3 { width: 200px; height: 200px; background: var(--sage-light); bottom: -80px; left: 30%; }
+
+    /* ---- Testimonial preview ---- */
+    .preview-quotes {
+      padding: 40px 28px 60px; text-align: center;
+    }
+    .preview-quotes h2 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.8rem; margin-bottom: 36px;
+    }
+    .quote-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 18px; max-width: 780px; margin: 0 auto;
+    }
+    .quote-card {
+      background: var(--warm-white);
+      border: 1px solid var(--sand);
+      border-radius: 20px; padding: 24px;
+      text-align: left;
+      transition: all 0.3s;
+      opacity: 0; animation: fadeUp 0.7s ease both;
+    }
+    .quote-card:nth-child(1) { animation-delay: 0.1s; }
+    .quote-card:nth-child(2) { animation-delay: 0.2s; }
+    .quote-card:nth-child(3) { animation-delay: 0.3s; }
+    .quote-card:hover { transform: translateY(-3px); box-shadow: 0 8px 30px rgba(44,36,32,0.07); }
+    .quote-card .anon {
+      font-size: 0.78rem; color: var(--stone); margin-bottom: 10px;
+      text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    .quote-card p {
+      font-size: 0.95rem; color: var(--ink-soft);
+      line-height: 1.65; margin-bottom: 14px;
+    }
+    .quote-card .reactions {
+      display: flex; gap: 10px; font-size: 0.82rem; color: var(--stone);
+    }
+    .reaction-btn {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 4px 10px; border-radius: 50px;
+      background: var(--cream-deep); transition: all 0.2s;
+    }
+    .reaction-btn:hover { background: var(--coral-soft); }
+
+    /* ---- How it works ---- */
+    .how-section {
+      padding: 80px 28px;
+      background: var(--warm-white);
+      border-top: 1px solid var(--sand);
+      border-bottom: 1px solid var(--sand);
+    }
+    .how-section h2 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 2rem; text-align: center; margin-bottom: 12px;
+    }
+    .how-subtitle {
+      text-align: center; color: var(--ink-muted);
+      font-size: 0.95rem; margin-bottom: 52px;
+    }
+    .steps {
+      display: grid; gap: 16px; max-width: 600px; margin: 0 auto;
+    }
+    .step {
+      display: flex; align-items: flex-start; gap: 18px;
+      background: var(--cream); border: 1px solid var(--sand);
+      border-radius: 18px; padding: 20px 22px;
+      transition: all 0.25s; opacity: 0; animation: fadeUp 0.6s ease both;
+    }
+    .step:nth-child(1) { animation-delay: 0.05s; }
+    .step:nth-child(2) { animation-delay: 0.15s; }
+    .step:nth-child(3) { animation-delay: 0.25s; }
+    .step:nth-child(4) { animation-delay: 0.35s; }
+    .step:hover { transform: translateX(4px); box-shadow: 0 4px 20px rgba(44,36,32,0.05); }
+    .step-num {
+      width: 38px; height: 38px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 0.85rem; flex-shrink: 0;
+    }
+    .step:nth-child(1) .step-num { background: var(--coral-soft); color: var(--clay); }
+    .step:nth-child(2) .step-num { background: var(--lavender-soft); color: var(--lavender); }
+    .step:nth-child(3) .step-num { background: var(--sage-light); color: var(--sage); }
+    .step:nth-child(4) .step-num { background: #f0e4d4; color: var(--terracotta); }
+    .step-body h3 { font-size: 0.95rem; font-weight: 600; margin-bottom: 4px; }
+    .step-body p { font-size: 0.85rem; color: var(--ink-muted); line-height: 1.55; }
+
+    /* ---- Spaces ---- */
+    .spaces-section {
+      padding: 80px 28px;
+    }
+    .spaces-section h2 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 2rem; text-align: center; margin-bottom: 12px;
+    }
+    .spaces-subtitle {
+      text-align: center; color: var(--ink-muted);
+      font-size: 0.95rem; margin-bottom: 44px;
+    }
+    .spaces-grid {
+      display: flex; flex-wrap: wrap; gap: 10px;
+      justify-content: center; max-width: 700px; margin: 0 auto;
+    }
+    .space-tag {
+      padding: 10px 20px; border-radius: 50px;
+      font-size: 0.88rem; font-weight: 500;
+      border: 1.5px solid var(--sand);
+      background: var(--warm-white);
+      color: var(--ink-soft);
+      transition: all 0.25s; cursor: default;
+    }
+    .space-tag:hover { border-color: var(--terracotta); color: var(--terracotta); background: #fff8f4; }
+    .space-tag.sage { border-color: var(--sage-light); color: var(--sage); }
+    .space-tag.sage:hover { border-color: var(--sage); background: #f4f7f4; }
+    .space-tag.lav { border-color: var(--lavender-soft); color: var(--lavender); }
+    .space-tag.lav:hover { border-color: var(--lavender); background: #f6f4f8; }
+    .space-tag.coral { border-color: var(--coral-soft); color: var(--clay); }
+    .space-tag.coral:hover { border-color: var(--coral); background: #fdf4f0; }
+
+    /* ---- Safety ---- */
+    .safety-section {
+      padding: 80px 28px;
+      background: var(--warm-white);
+      border-top: 1px solid var(--sand);
+    }
+    .safety-section h2 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 2rem; text-align: center; margin-bottom: 12px;
+    }
+    .safety-subtitle {
+      text-align: center; color: var(--ink-muted);
+      font-size: 0.95rem; margin-bottom: 48px;
+    }
+    .safety-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 18px; max-width: 780px; margin: 0 auto;
+    }
+    .safety-card {
+      text-align: center; padding: 28px 18px;
+      background: var(--cream); border-radius: 20px;
+      border: 1px solid var(--sand);
+      transition: all 0.3s;
+    }
+    .safety-card:hover { transform: translateY(-3px); box-shadow: 0 8px 28px rgba(44,36,32,0.06); }
+    .safety-icon {
+      font-size: 2rem; margin-bottom: 14px;
+    }
+    .safety-card h3 { font-size: 0.9rem; font-weight: 600; margin-bottom: 8px; }
+    .safety-card p { font-size: 0.82rem; color: var(--ink-muted); line-height: 1.55; }
+
+    /* ---- Manifesto / philosophy ---- */
+    .manifesto {
+      padding: 80px 28px; text-align: center;
+      background: var(--cream-deep);
+      border-top: 1px solid var(--sand);
+    }
+    .manifesto blockquote {
+      font-family: 'DM Serif Display', serif;
+      font-style: italic;
+      font-size: clamp(1.4rem, 3.5vw, 2rem);
+      line-height: 1.4;
+      color: var(--ink);
+      max-width: 640px;
+      margin: 0 auto 18px;
+    }
+    .manifesto cite {
+      font-family: 'Caveat', cursive;
+      font-size: 1.2rem;
+      color: var(--terracotta);
+      font-style: normal;
+    }
+
+    /* ---- CTA band ---- */
+    .cta-band {
+      padding: 80px 28px; text-align: center;
+    }
+    .cta-band h2 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(1.8rem, 4vw, 2.4rem);
+      margin-bottom: 14px;
+    }
+    .cta-band p {
+      color: var(--ink-muted); font-size: 1rem;
+      margin-bottom: 32px;
+    }
+    .cta-form {
+      display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;
+      max-width: 480px; margin: 0 auto;
+    }
+    .cta-form input {
+      flex: 1; min-width: 220px;
+      padding: 15px 22px; border-radius: 50px;
+      border: 1.5px solid var(--sand);
+      background: var(--warm-white);
+      font-family: 'Inter', sans-serif; font-size: 0.95rem;
+      color: var(--ink); outline: none;
+      transition: border-color 0.2s;
+    }
+    .cta-form input:focus { border-color: var(--terracotta); }
+    .cta-form button {
+      background: var(--terracotta); color: #fff;
+      border: none; padding: 15px 30px; border-radius: 50px;
+      font-weight: 600; cursor: pointer;
+      font-family: 'Inter', sans-serif; font-size: 0.95rem;
+      transition: all 0.25s;
+    }
+    .cta-form button:hover { background: var(--terracotta-hover); transform: translateY(-2px); }
+    .cta-note {
+      margin-top: 14px; font-size: 0.8rem; color: var(--stone);
+    }
+
+    /* ---- Footer ---- */
+    footer {
+      padding: 40px 28px; text-align: center;
+      border-top: 1px solid var(--sand);
+    }
+    footer p { font-size: 0.82rem; color: var(--stone); line-height: 1.7; }
+    footer a { color: var(--terracotta); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+
+    /* ---- Animations ---- */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ---- Reveal on scroll ---- */
+    .reveal { opacity: 0; transform: translateY(20px); transition: all 0.7s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ---- Mobile ---- */
+    @media (max-width: 600px) {
+      .hero { padding: 56px 20px 40px; }
+      .cta-form { flex-direction: column; align-items: stretch; }
+      .cta-form input, .cta-form button { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ====== NAV ====== -->
+<nav>
+  <div class="nav-inner">
+    <div class="logo">HealWith<span>Me</span></div>
+    <a href="#waitlist" class="nav-cta">Join the waitlist</a>
+  </div>
+</nav>
+
+<!-- ====== HERO ====== -->
+<section class="hero">
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+
+  <div class="container">
+    <div class="hero-badge">🌱 A space where you don't have to pretend</div>
+
+    <h1>
+      You don't have to carry<br />
+      <em>everything</em> alone.
+    </h1>
+
+    <p>
+      HealWithMe is a gentle, anonymous space to share what you're feeling —
+      whether it's grief, loneliness, a bad day, or something you can't name.
+      No judgment. No advice you didn't ask for. Just people who understand.
+    </p>
+
+    <div class="hero-actions">
+      <a href="#waitlist" class="btn-primary">Join the waitlist — it's free</a>
+      <a href="#how" class="btn-secondary">See how it works ↓</a>
+    </div>
+  </div>
+</section>
+
+<!-- ====== QUOTE PREVIEW ====== -->
+<section class="preview-quotes">
+  <div class="container">
+    <h2>This is what people are sharing</h2>
+    <div class="quote-grid">
+      <div class="quote-card">
+        <div class="anon">Anonymous · 2 hours ago</div>
+        <p>"Today was harder than I expected. But I showed up, and that counts for something."</p>
+        <div class="reactions">
+          <span class="reaction-btn">❤️ 24</span>
+          <span class="reaction-btn">💬 8</span>
+        </div>
+      </div>
+
+      <div class="quote-card">
+        <div class="anon">Anonymous · 4 hours ago</div>
+        <p>"I'm finally learning that what happened to me wasn't my fault. Some days I actually believe it."</p>
+        <div class="reactions">
+          <span class="reaction-btn">❤️ 41</span>
+          <span class="reaction-btn">💬 12</span>
+        </div>
+      </div>
+
+      <div class="quote-card">
+        <div class="anon">Anonymous · 6 hours ago</div>
+        <p>"Does anyone else feel like they're pretending to have it all together? Because I really am."</p>
+        <div class="reactions">
+          <span class="reaction-btn">❤️ 67</span>
+          <span class="reaction-btn">💬 19</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== HOW IT WORKS ====== -->
+<section class="how-section" id="how">
+  <div class="container">
+    <h2 class="reveal">How it works</h2>
+    <p class="how-subtitle reveal">Four gentle steps. No signup drama. No pressure.</p>
+
+    <div class="steps">
+      <div class="step reveal">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <h3>Pick how you're feeling</h3>
+          <p>Open the app and choose what you need right now — someone to listen, emotional support, advice, or just a space to let it out.</p>
+        </div>
+      </div>
+
+      <div class="step reveal">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <h3>Share what's on your mind</h3>
+          <p>Write it out. Say it in a voice note. Stay completely anonymous — no name, no photo, no profile anyone can find.</p>
+        </div>
+      </div>
+
+      <div class="step reveal">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <h3>People who get it respond</h3>
+          <p>Not random comments. Warm, thoughtful responses from people who've been there — or who are there right now with you.</p>
+        </div>
+      </div>
+
+      <div class="step reveal">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <h3>Feel a little lighter</h3>
+          <p>That's the goal. Not a fix, not a solution — just the reminder that you're not alone in this.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== SPACES ====== -->
+<section class="spaces-section">
+  <div class="container">
+    <h2 class="reveal">Healing spaces for real life</h2>
+    <p class="spaces-subtitle reveal">Join circles that match what you're going through</p>
+
+    <div class="spaces-grid reveal">
+      <span class="space-tag coral">💔 Breakups & heartbreak</span>
+      <span class="space-tag">😢 Grief & loss</span>
+      <span class="space-tag sage">🏠 Family & home</span>
+      <span class="space-tag lav">👶 Childhood & growing up</span>
+      <span class="space-tag coral">😔 Loneliness</span>
+      <span class="space-tag">💼 Work & burnout</span>
+      <span class="space-tag sage">📚 Student pressure</span>
+      <span class="space-tag lav">😰 Anxiety</span>
+      <span class="space-tag">🌟 Self-worth</span>
+      <span class="space-tag coral">🤍 Not sure what I'm feeling</span>
+    </div>
+  </div>
+</section>
+
+<!-- ====== SAFETY ====== -->
+<section class="safety-section">
+  <div class="container">
+    <h2 class="reveal">Your safety isn't optional</h2>
+    <p class="safety-subtitle reveal">We built the protection in before the features</p>
+
+    <div class="safety-grid">
+      <div class="safety-card reveal">
+        <div class="safety-icon">🛡️</div>
+        <h3>Kindness-first design</h3>
+        <p>Every post has an intention — listen, support, or express — so responses match what you actually need.</p>
+      </div>
+
+      <div class="safety-card reveal">
+        <div class="safety-icon">🚨</div>
+        <h3>Crisis support built in</h3>
+        <p>If someone is in pain, we show them real helpline numbers — not a "contact us" form. Immediately.</p>
+      </div>
+
+      <div class="safety-card reveal">
+        <div class="safety-icon">🤝</div>
+        <h3>No unsolicited advice</h3>
+        <p>The community guidelines are clear: don't diagnose, don't fix, don't judge. Just be present.</p>
+      </div>
+
+      <div class="safety-card reveal">
+        <div class="safety-icon">🔒</div>
+        <h3>Truly anonymous</h3>
+        <p>No real names, no phone numbers, no location sharing. We literally can't see who you are.</p>
+      </div>
+
+      <div class="safety-card reveal">
+        <div class="safety-icon">👁️</div>
+        <h3>Human moderation</h3>
+        <p>Real people, not just AI. Every flagged post gets reviewed by someone who cares about this community.</p>
+      </div>
+
+      <div class="safety-card reveal">
+        <div class="safety-icon">🗑️</div>
+        <h3>Your data, your call</h3>
+        <p>Delete anything, anytime. No questions asked. Your story belongs to you — not to us.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== MANIFESTO ====== -->
+<section class="manifesto">
+  <div class="container reveal">
+    <blockquote>
+      "You don't have to tell us who you are<br />
+      to tell us how you feel."
+    </blockquote>
+    <cite>— that's the whole point</cite>
+  </div>
+</section>
+
+<!-- ====== CTA / WAITLIST ====== -->
+<section class="cta-band" id="waitlist">
+  <div class="container">
+    <h2 class="reveal">Be among the first</h2>
+    <p class="reveal">We're opening slowly — with care. Leave your email and we'll let you know when there's a spot for you.</p>
+
+    <form class="cta-form reveal" id="waitlistForm">
+      <input type="email" id="emailInput" placeholder="your@email.com" required autocomplete="email" />
+      <button type="submit">Join the waitlist →</button>
+    </form>
+    <p class="cta-note reveal">Free forever. No spam. Unsubscribe whenever you want.</p>
+  </div>
+</section>
+
+<!-- ====== FOOTER ====== -->
+<footer>
+  <div class="container">
+    <p>
+      HealWithMe is a peer-support community, not a replacement for professional help.<br />
+      If you're in crisis, please reach out to someone you trust or a helpline near you.<br /><br />
+      Made with care · <a href="#waitlist">Join the waitlist</a>
+    </p>
+  </div>
+</footer>
+
+<script>
+  /* ---- Intersection Observer for scroll reveals ---- */
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  /* ---- Waitlist form — stores locally (replace with backend later) ---- */
+  document.getElementById('waitlistForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const email = document.getElementById('emailInput').value.trim();
+    if (!email) return;
+
+    const existing = JSON.parse(localStorage.getItem('healwithme_waitlist') || '[]');
+    if (existing.includes(email)) {
+      alert("You're already on the list! We'll be in touch soon 🌱");
+      return;
+    }
+
+    existing.push({ email, joined: new Date().toISOString() });
+    localStorage.setItem('healwithme_waitlist', JSON.stringify(existing));
+
+    // Visual confirmation
+    const btn = this.querySelector('button');
+    const input = this.querySelector('input');
+    btn.textContent = 'You\'re on the list 🌿';
+    btn.style.background = '#7a8f7a';
+    input.value = '';
+    input.disabled = true;
+    btn.disabled = true;
+
+    // Log count
+    console.log(`🌱 Waitlist now has ${existing.length} signups`);
+  });
+
+  /* ---- Smooth hover on reaction buttons ---- */
+  document.querySelectorAll('.reaction-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      this.style.transform = 'scale(1.08)';
+      this.style.background = '#f0d5ca';
+      setTimeout(() => {
+        this.style.transform = '';
+        this.style.background = '';
+      }, 250);
+    });
+  });
+</script>
+
+</body>
+</html>
